@@ -89,28 +89,28 @@
 	        <RadioButton 
 	            android:id="@+id/task_priority_none_rb"
 	            android:checked="true"
-	            android:text="None"
+	            android:text="@string/none"
 	            android:layout_weight="1"
 	        />
 	        
 	        <RadioButton 
 	            android:id="@+id/task_priority_low_rb"
 	            android:checked="true"
-	            android:text="Low"
+	            android:text="@string/low_priority"
 	            android:layout_weight="1"
 	        />
 	        
 	        <RadioButton 
 	            android:id="@+id/task_priority_med_rb"
 	            android:checked="true"
-	            android:text="Medium"
+	            android:text="@string/med_priority"
 	            android:layout_weight="1"
 	        />
 	        
 	        <RadioButton 
 	            android:id="@+id/task_priority_high_rb"
 	            android:checked="true"
-	            android:text="High"
+	            android:text="@string/high_priority"
 	            android:layout_weight="1"
 	        />
 	    </RadioGroup>
@@ -122,6 +122,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/task_comment_hint_et"
+        />
+    
+    <TextView 
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/subtask"
         />
     
     <LinearLayout 

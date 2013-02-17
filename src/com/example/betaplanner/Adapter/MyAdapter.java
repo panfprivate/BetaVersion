@@ -111,7 +111,7 @@ public class MyAdapter extends SimpleCursorAdapter{
 		final String s2 = cur.getString(cur.getColumnIndex(DBMgr.TASK_CHECKED));
 		final String where = "_id =" + s1;
 		
-		Log.w(s1, s2);
+//		Log.w(s1, s2);
 /*		
 		if(Math.random() > 0.5){
 			cb.setChecked(true);
@@ -144,7 +144,7 @@ public class MyAdapter extends SimpleCursorAdapter{
 			    	args.put("status", "true");
 //			    	mDbHelper.taskCheckedChange(cc.getColumnIndex(DBMgr.KEY_ROWID), "true");
 //			    	mDbHelper.checkedchange(args, cc.getColumnIndex(DBMgr.KEY_ROWID));
-					Log.w(s1, s2);
+//					Log.w(s1, s2);
 					mDbHelper.updateCheck("tasks", args, where);
 //					mDbHelper.update("N", "true", s1 + "=" + s1, null);
 				}
@@ -155,7 +155,7 @@ public class MyAdapter extends SimpleCursorAdapter{
 					mDbHelper.updateCheck("tasks", args, where);
 //			    	mDbHelper.taskCheckedChange(cc.getColumnIndex(DBMgr.KEY_ROWID), "false");			    	
 //			    	mDbHelper.checkedchange(args, cc.getColumnIndex(DBMgr.KEY_ROWID));
-					Log.w(s1, s2);
+//					Log.w(s1, s2);
 				}
 			}
 			

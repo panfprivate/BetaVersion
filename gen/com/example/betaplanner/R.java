@@ -97,6 +97,7 @@ public final class R {
         public static final int none=0x7f050026;
         public static final int note_edit=0x7f05000c;
         public static final int priority=0x7f050022;
+        public static final int subtask=0x7f050029;
         public static final int task_comment_hint_et=0x7f050017;
         public static final int task_delete=0x7f05001c;
         public static final int task_location_alert_tv=0x7f050019;

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,6 +44,8 @@ public class TaskEditor extends Activity {
 			mRowId = extras != null ? extras.getLong(DBMgr.KEY_ROWID)
 									: null;
 		}
+		
+		Log.w("Show Rowid", mRowId+"");
 
 		populateFields();
 

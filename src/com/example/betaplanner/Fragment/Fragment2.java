@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.betaplanner.R;
+import com.example.betaplanner.Activity.NoteEditor;
 import com.example.betaplanner.Activity.TaskEditor;
 import com.example.betaplanner.Adapter.MyAdapter;
 import com.example.betaplanner.Manager.DBMgr;
@@ -61,34 +62,17 @@ public class Fragment2 extends ListFragment {
 		return inflater.inflate(R.layout.fragment_task, container, false);
 	}
 	
-/*
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		mv = inflater.inflate(R.layout.fragment_task, container, false);
-		mll = (LinearLayout) mv.findViewById(R.id.tab02);
-		mlv = (ListView) mv.findViewById(android.R.id.list);
-		mlv.setAdapter(fillData());
-		mlv.setClickable(true);
-		
-		mlv.setOnItemClickListener(new OnItemClickListener() {
 
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position,
-					long id) {
-				Intent i = new Intent(getActivity(), TaskEditor.class);
-				i.putExtra(DBMgr.KEY_ROWID, id);
-				mTv = (TextView)mv.findViewById(R.id.tv2);
-				startActivity(i);
-			}
-			
-		});
-		registerForContextMenu(mlv);
-		return mv;
-	}
-*/
 	
+	@Override
+	public void onListItemClick(ListView l, View v, int position, long id) {
+		// TODO Auto-generated method stub
+		super.onListItemClick(l, v, position, id);
+		Intent i = new Intent(getActivity(), TaskEditor.class);
+		i.putExtra(DBMgr.KEY_ROWID, id);
+		startActivity(i);
+	}
+
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		// TODO Auto-generated method stub

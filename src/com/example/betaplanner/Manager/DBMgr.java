@@ -16,6 +16,7 @@ public class DBMgr {
     public static final String TASK_TITLE = "tasktitle";
     public static final String TASK_BODY = "taskbody";
     public static final String TASK_CHECKED = "status";
+    public static final String TASK_PRIOR = "prior";
     public static final String KEY_ROWID = "_id";
 
     private static final String TAG = "DbAdapter";
@@ -33,7 +34,11 @@ public class DBMgr {
         + "notetitle text not null, notebody text not null);";
     private static final String TASKDB_CREATE =
         "create table tasks (_id integer primary key autoincrement, "
-        + "tasktitle text not null, taskbody text not null, status text not null);";//, check text not null
+        + "tasktitle text not null, taskbody text not null, status text not null, prior text not null);";//, check text not null
+    private static final String SUBTASKDB_CREATE =
+    	"create table subtasks (_id integer primary key autoincrement, "
+    	+ "subtasktitle text not null, substaskbody text not null, status text not null, ptaskrow integer not null);";
+    
 
     private final Context mCtx;
 
@@ -99,6 +104,7 @@ public class DBMgr {
         initialValues.put(TASK_TITLE, title);
         initialValues.put(TASK_BODY, body);
         initialValues.put(TASK_CHECKED, "false");
+        initialValues.put(TASK_PRIOR, "n");
 
         return mDb.insert(DATABASE_TASKTABLE, null, initialValues);
     }
@@ -131,7 +137,8 @@ public class DBMgr {
         		new String[] {KEY_ROWID, 
 			        		TASK_TITLE,
 			                TASK_BODY,
-			                TASK_CHECKED
+			                TASK_CHECKED,
+			                TASK_PRIOR
                 }, 
                 null, 
                 null, 
@@ -177,7 +184,7 @@ public class DBMgr {
         Cursor mCursor =
 
             mDb.query(true, DATABASE_TASKTABLE, new String[] {KEY_ROWID,
-                    TASK_TITLE, TASK_BODY, TASK_CHECKED}, KEY_ROWID + "=" + rowId, null,
+                    TASK_TITLE, TASK_BODY, TASK_CHECKED, TASK_PRIOR}, KEY_ROWID + "=" + rowId, null,
                     null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();
@@ -187,10 +194,11 @@ public class DBMgr {
     }
 
 
-    public boolean updateTask(long rowId, String title, String body) {
+    public boolean updateTask(long rowId, String title, String body, String prior) {
         ContentValues args = new ContentValues();
         args.put(TASK_TITLE, title);
         args.put(TASK_BODY, body);
+        args.put(TASK_PRIOR, prior);
 
         return mDb.update(DATABASE_TASKTABLE, args, KEY_ROWID + "=" + rowId, null) > 0;
     }

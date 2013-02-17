@@ -2,6 +2,7 @@ package com.example.betaplanner.Activity;
 
 import android.app.Activity;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
@@ -9,7 +10,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.example.betaplanner.R;
 import com.example.betaplanner.Manager.DBMgr;
@@ -18,8 +21,10 @@ public class TaskEditor extends Activity {
 
     private EditText mTitleText;
     private EditText mCommentText;
+    private Spinner	mPriorSpn;
     private Long mRowId;
     private DBMgr mDbHelper;
+    private CheckBox mCb;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +39,7 @@ public class TaskEditor extends Activity {
 
         mTitleText = (EditText) findViewById(R.id.task_title_et);
         mCommentText = (EditText) findViewById(R.id.task_comment_et);
+        mPriorSpn = (Spinner) findViewById(R.id.priority_spn);
 
         Button confirmButton = (Button) findViewById(R.id.task_save_bt);
 
@@ -68,7 +74,22 @@ public class TaskEditor extends Activity {
                     note.getColumnIndexOrThrow(DBMgr.TASK_TITLE)));
             mCommentText.setText(note.getString(
                     note.getColumnIndexOrThrow(DBMgr.TASK_BODY)));
-        }
+
+            String s = note.getString(note.getColumnIndexOrThrow(DBMgr.TASK_PRIOR));
+            
+            if(s.equals("High")){
+            	mPriorSpn.setSelection(3);
+            }
+            else if(s.equals("Medium")){
+            	mPriorSpn.setSelection(2);
+            }
+            else if(s.equals("Low")){
+            	mPriorSpn.setSelection(1);
+            }
+            else{
+            	mPriorSpn.setSelection(0);
+            }
+       }
     }
     
     
@@ -119,6 +140,8 @@ public class TaskEditor extends Activity {
     private void saveState() {
         String title = mTitleText.getText().toString();
         String body = mCommentText.getText().toString();
+        String prior = mPriorSpn.getSelectedItem().toString();
+        Log.w("prioriey", prior+"");
 
         if (mRowId == null) {
             long id = mDbHelper.createTask(title, body);
@@ -126,7 +149,8 @@ public class TaskEditor extends Activity {
                 mRowId = id;
             }
         } else {
-            mDbHelper.updateTask(mRowId, title, body);
+            mDbHelper.updateTask(mRowId, title, body, prior);
+            
         }
     }
 }

@@ -77,7 +77,7 @@
 	        android:layout_height="wrap_content"
 	        android:text="@string/task_priority_tv"
 	        />
-        
+<!--         
 	    <RadioGroup 
 	        android:id="@+id/task_priority_rg"
 	        android:layout_width="match_parent"
@@ -114,6 +114,15 @@
 	            android:layout_weight="1"
 	        />
 	    </RadioGroup>
+--> 
+
+		<Spinner 
+		    android:id="@+id/priority_spn"
+		   	android:layout_width="match_parent" 
+			android:layout_height="wrap_content"
+			android:entries="@array/priority"
+		    />
+
     
 	</LinearLayout>
 	
@@ -130,6 +139,13 @@
         android:layout_height="wrap_content"
         android:text="@string/subtask"
         />
+    
+    <ListView 
+        android:id="@+id/subtask_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        
+        ></ListView>
     
     <LinearLayout 
         android:layout_width="match_parent"

@@ -8,57 +8,58 @@
 package com.example.betaplanner;
 
 public final class R {
+    public static final class array {
+        public static final int priority=0x7f040000;
+    }
     public static final class attr {
     }
     public static final class color {
-        public static final int Black=0x7f040012;
-        public static final int Color_Done=0x7f040011;
-        public static final int Noteback=0x7f040010;
-        public static final int Text=0x7f04000e;
-        public static final int ToDayText=0x7f04000f;
-        public static final int br0=0x7f04000d;
-        public static final int calendar_background=0x7f040001;
-        public static final int calendar_zhe_day=0x7f040003;
-        public static final int event_center=0x7f040004;
-        public static final int forecast_point=0x7f04000c;
-        public static final int frame=0x7f04000b;
-        public static final int noMonth=0x7f040005;
-        public static final int selection=0x7f040002;
-        public static final int tempColor=0x7f04000a;
-        public static final int text_6=0x7f040008;
-        public static final int text_7=0x7f040009;
-        public static final int title_text_6=0x7f040006;
-        public static final int title_text_7=0x7f040007;
-        public static final int white=0x7f040000;
+        public static final int Black=0x7f050012;
+        public static final int Color_Done=0x7f050011;
+        public static final int Noteback=0x7f050010;
+        public static final int Text=0x7f05000e;
+        public static final int ToDayText=0x7f05000f;
+        public static final int br0=0x7f05000d;
+        public static final int calendar_background=0x7f050001;
+        public static final int calendar_zhe_day=0x7f050003;
+        public static final int event_center=0x7f050004;
+        public static final int forecast_point=0x7f05000c;
+        public static final int frame=0x7f05000b;
+        public static final int noMonth=0x7f050005;
+        public static final int red=0x7f050013;
+        public static final int selection=0x7f050002;
+        public static final int tempColor=0x7f05000a;
+        public static final int text_6=0x7f050008;
+        public static final int text_7=0x7f050009;
+        public static final int title_text_6=0x7f050006;
+        public static final int title_text_7=0x7f050007;
+        public static final int white=0x7f050000;
     }
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int cb=0x7f080014;
-        public static final int menu_settings=0x7f080016;
-        public static final int note_body=0x7f080002;
-        public static final int note_title=0x7f080001;
+        public static final int cb=0x7f090011;
+        public static final int menu_settings=0x7f090013;
+        public static final int note_body=0x7f090002;
+        public static final int note_title=0x7f090001;
+        public static final int priority_spn=0x7f090009;
         public static final int realtabcontent=0x01010000;
-        public static final int save=0x7f080003;
-        public static final int scroller=0x7f080000;
-        public static final int sv=0x7f080012;
-        public static final int tab01=0x7f080011;
-        public static final int task_cancel_bt=0x7f080010;
-        public static final int task_comment_et=0x7f08000e;
-        public static final int task_location_alert_spinner=0x7f080007;
-        public static final int task_location_alert_tb=0x7f080008;
-        public static final int task_priority_high_rb=0x7f08000d;
-        public static final int task_priority_low_rb=0x7f08000b;
-        public static final int task_priority_med_rb=0x7f08000c;
-        public static final int task_priority_none_rb=0x7f08000a;
-        public static final int task_priority_rg=0x7f080009;
-        public static final int task_save_bt=0x7f08000f;
-        public static final int task_time_alert_spinner=0x7f080005;
-        public static final int task_time_alert_tb=0x7f080006;
-        public static final int task_title_et=0x7f080004;
-        public static final int text1=0x7f080013;
-        public static final int tv2=0x7f080015;
+        public static final int save=0x7f090003;
+        public static final int scroller=0x7f090000;
+        public static final int subtask_list=0x7f09000b;
+        public static final int sv=0x7f09000f;
+        public static final int tab01=0x7f09000e;
+        public static final int task_cancel_bt=0x7f09000d;
+        public static final int task_comment_et=0x7f09000a;
+        public static final int task_location_alert_spinner=0x7f090007;
+        public static final int task_location_alert_tb=0x7f090008;
+        public static final int task_save_bt=0x7f09000c;
+        public static final int task_time_alert_spinner=0x7f090005;
+        public static final int task_time_alert_tb=0x7f090006;
+        public static final int task_title_et=0x7f090004;
+        public static final int text1=0x7f090010;
+        public static final int tv2=0x7f090012;
     }
     public static final class layout {
         public static final int activity_main_tab=0x7f030000;
@@ -71,52 +72,52 @@ public final class R {
         public static final int task_row=0x7f030007;
     }
     public static final class menu {
-        public static final int activity_main_tab=0x7f070000;
-        public static final int activity_task_editor=0x7f070001;
+        public static final int activity_main_tab=0x7f080000;
+        public static final int activity_task_editor=0x7f080001;
     }
     public static final class string {
-        public static final int Fri=0x7f050007;
-        public static final int Mon=0x7f050003;
-        public static final int Sat=0x7f050008;
-        public static final int Sun=0x7f050009;
-        public static final int Thu=0x7f050006;
-        public static final int Tue=0x7f050004;
-        public static final int Wed=0x7f050005;
-        public static final int app_name=0x7f050000;
-        public static final int body=0x7f05001e;
-        public static final int btn_save=0x7f05000f;
-        public static final int hello_world=0x7f050001;
-        public static final int high_priority=0x7f050025;
-        public static final int loc_alert=0x7f050021;
-        public static final int low_priority=0x7f050023;
-        public static final int med_priority=0x7f050024;
-        public static final int menu_delete=0x7f05000a;
-        public static final int menu_insert=0x7f050014;
-        public static final int menu_settings=0x7f050002;
-        public static final int no_notes=0x7f050011;
-        public static final int none=0x7f050026;
-        public static final int note_edit=0x7f05000c;
-        public static final int priority=0x7f050022;
-        public static final int subtask=0x7f050029;
-        public static final int task_comment_hint_et=0x7f050017;
-        public static final int task_delete=0x7f05001c;
-        public static final int task_location_alert_tv=0x7f050019;
-        public static final int task_priority_tv=0x7f05001a;
-        public static final int task_time_alert_tv=0x7f050018;
-        public static final int task_title_hint_et=0x7f050016;
-        public static final int test=0x7f050028;
-        public static final int texttitle_notebody=0x7f05000e;
-        public static final int texttitle_notetitle=0x7f050010;
-        public static final int time_alert=0x7f05001f;
-        public static final int title=0x7f05001d;
-        public static final int title_activity_cal=0x7f05001b;
-        public static final int title_activity_fragment1=0x7f050012;
-        public static final int title_activity_fragment2=0x7f050013;
-        public static final int title_activity_main=0x7f05000d;
-        public static final int title_activity_t_editor=0x7f050015;
-        public static final int title_activity_task_edit=0x7f050020;
-        public static final int title_noteedit=0x7f05000b;
-        public static final int title_taskedit=0x7f050027;
+        public static final int Fri=0x7f060007;
+        public static final int Mon=0x7f060003;
+        public static final int Sat=0x7f060008;
+        public static final int Sun=0x7f060009;
+        public static final int Thu=0x7f060006;
+        public static final int Tue=0x7f060004;
+        public static final int Wed=0x7f060005;
+        public static final int app_name=0x7f060000;
+        public static final int body=0x7f06001e;
+        public static final int btn_save=0x7f06000f;
+        public static final int hello_world=0x7f060001;
+        public static final int high_priority=0x7f060025;
+        public static final int loc_alert=0x7f060021;
+        public static final int low_priority=0x7f060023;
+        public static final int med_priority=0x7f060024;
+        public static final int menu_delete=0x7f06000a;
+        public static final int menu_insert=0x7f060014;
+        public static final int menu_settings=0x7f060002;
+        public static final int no_notes=0x7f060011;
+        public static final int none=0x7f060026;
+        public static final int note_edit=0x7f06000c;
+        public static final int priority=0x7f060022;
+        public static final int subtask=0x7f060029;
+        public static final int task_comment_hint_et=0x7f060017;
+        public static final int task_delete=0x7f06001c;
+        public static final int task_location_alert_tv=0x7f060019;
+        public static final int task_priority_tv=0x7f06001a;
+        public static final int task_time_alert_tv=0x7f060018;
+        public static final int task_title_hint_et=0x7f060016;
+        public static final int test=0x7f060028;
+        public static final int texttitle_notebody=0x7f06000e;
+        public static final int texttitle_notetitle=0x7f060010;
+        public static final int time_alert=0x7f06001f;
+        public static final int title=0x7f06001d;
+        public static final int title_activity_cal=0x7f06001b;
+        public static final int title_activity_fragment1=0x7f060012;
+        public static final int title_activity_fragment2=0x7f060013;
+        public static final int title_activity_main=0x7f06000d;
+        public static final int title_activity_t_editor=0x7f060015;
+        public static final int title_activity_task_edit=0x7f060020;
+        public static final int title_noteedit=0x7f06000b;
+        public static final int title_taskedit=0x7f060027;
     }
     public static final class style {
         /** 
@@ -140,10 +141,10 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f060000;
+        public static final int AppBaseTheme=0x7f070000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f060001;
+        public static final int AppTheme=0x7f070001;
     }
 }

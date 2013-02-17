@@ -19,5 +19,6 @@
 	<color name="Noteback">#FFFFFF</color>
     <color name="Color_Done">#D1D1D1</color>
     <color name="Black">#000000</color>
+    <color name="red">#009900</color>
     
 </resources>

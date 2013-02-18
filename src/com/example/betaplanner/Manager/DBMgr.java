@@ -17,6 +17,11 @@ public class DBMgr {
     public static final String TASK_BODY = "taskbody";
     public static final String TASK_CHECKED = "status";
     public static final String TASK_PRIOR = "prior";
+    public static final String SUBTASK_TITLE = "subtasktitle";
+    public static final String SUBTASK_BODY = "subtaskbody";
+    public static final String SUBTASK_CHECKED = "status";
+    public static final String SUBTASK_PRIOR = "prior";
+    public static final String SUBTASK_PARENT = "ptask";
     public static final String KEY_ROWID = "_id";
 
     private static final String TAG = "DbAdapter";
@@ -26,6 +31,7 @@ public class DBMgr {
     private static final String DATABASE_NAME = "data";
     private static final String DATABASE_NOTETABLE = "notes";
     private static final String DATABASE_TASKTABLE = "tasks";
+    private static final String DATABASE_SUBTASKTABLE = "subtasks";
     private static final int DATABASE_VERSION = 2;
 
 
@@ -37,7 +43,8 @@ public class DBMgr {
         + "tasktitle text not null, taskbody text not null, status text not null, prior text not null);";//, check text not null
     private static final String SUBTASKDB_CREATE =
     	"create table subtasks (_id integer primary key autoincrement, "
-    	+ "subtasktitle text not null, substaskbody text not null, status text not null, ptaskrow integer not null);";
+    	+ "subtasktitle text not null, substaskbody text not null, status text not null, prior text not null, "
+    	+ "ptask integer not null);";	//如果ptaskrow只能得到string， 那么则用text
     
 
     private final Context mCtx;
@@ -53,6 +60,7 @@ public class DBMgr {
 
             db.execSQL(NOTEDB_CREATE);
             db.execSQL(TASKDB_CREATE);
+            db.execSQL(SUBTASKDB_CREATE);
         }
 
         @Override
@@ -61,6 +69,7 @@ public class DBMgr {
                     + newVersion + ", which will destroy all old data");
             db.execSQL("DROP TABLE IF EXISTS notes");
             db.execSQL("DROP TABLE IF EXISTS tasks");
+            db.execSQL("DROP TABLE IF EXISTS subtasks");
             onCreate(db);
         }
     }
@@ -100,7 +109,8 @@ public class DBMgr {
 
  
     public long createTask(String title, String body) {
-        ContentValues initialValues = new ContentValues();
+        
+    	ContentValues initialValues = new ContentValues();
         initialValues.put(TASK_TITLE, title);
         initialValues.put(TASK_BODY, body);
         initialValues.put(TASK_CHECKED, "false");
@@ -115,6 +125,21 @@ public class DBMgr {
         return mDb.delete(DATABASE_TASKTABLE, KEY_ROWID + "=" + rowId, null) > 0;
     }
 
+    public long createSubtask(String title, String body) {
+    	
+    	ContentValues initialValues = new ContentValues();
+    	initialValues.put(SUBTASK_TITLE, title);
+        initialValues.put(SUBTASK_BODY, body);
+        initialValues.put(SUBTASK_CHECKED, "false");
+        initialValues.put(SUBTASK_PRIOR, "n");
+        
+        return mDb.insert(DATABASE_SUBTASKTABLE, null, initialValues);
+    }
+    
+    public boolean deleteSubtask(long rowId) {
+    	
+    	return mDb.delete(DATABASE_SUBTASKTABLE, KEY_ROWID + "=" + rowId, null) > 0;
+    }
     
     public Cursor fetchAllNotes() {
 
@@ -145,6 +170,23 @@ public class DBMgr {
                 null, 
                 null, 
                 null);
+    }
+    
+    
+    public Cursor fetchAllSubtasks(){
+    	
+    	return mDb.query(DATABASE_SUBTASKTABLE, 
+        		new String[] {KEY_ROWID, 
+			        		SUBTASK_TITLE,
+			                SUBTASK_BODY,
+			                SUBTASK_CHECKED,
+			                SUBTASK_PRIOR
+			    }, 
+			    null, 
+			    null, 
+			    null, 
+			    null, 
+			    null);
     }
     
     public void taskCheckedChange(long rowId, String status){
@@ -182,7 +224,6 @@ public class DBMgr {
     public Cursor fetchTask(long rowId) throws SQLException {
 
         Cursor mCursor =
-
             mDb.query(true, DATABASE_TASKTABLE, new String[] {KEY_ROWID,
                     TASK_TITLE, TASK_BODY, TASK_CHECKED, TASK_PRIOR}, KEY_ROWID + "=" + rowId, null,
                     null, null, null, null);
@@ -207,4 +248,29 @@ public class DBMgr {
     	
     	mDb.update(tablename, cv, where, null);
     }
+ 
+
+    public Cursor fetchSubteaskByParent(int id, long rowId) throws SQLException {	//fetchSubstask()
+    	Cursor c =
+    		mDb.query(true, DATABASE_SUBTASKTABLE, new String[] {KEY_ROWID, 
+    					SUBTASK_TITLE, SUBTASK_BODY, SUBTASK_CHECKED, SUBTASK_PRIOR}, 
+    				KEY_ROWID + "=" + rowId + " AND " + SUBTASK_PARENT + "=" + id,
+    				null, null, null, null, null);
+    	if (c != null) {
+            c.moveToFirst();
+        }
+    	return c;
+    }
+
+    
+    public boolean updateSubtask(long rowId, String title, String body, String prior) {
+    	
+        ContentValues args = new ContentValues();
+        args.put(SUBTASK_TITLE, title);
+        args.put(SUBTASK_BODY, body);
+        args.put(SUBTASK_PRIOR, prior);
+
+        return mDb.update(DATABASE_SUBTASKTABLE, args, KEY_ROWID + "=" + rowId, null) > 0;
+    }
+    
 }

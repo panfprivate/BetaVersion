@@ -3,7 +3,6 @@ package com.example.betaplanner.Activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
@@ -11,21 +10,25 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.example.betaplanner.R;
+import com.example.betaplanner.Adapter.MyAdapter;
 import com.example.betaplanner.Manager.DBMgr;
 
 public class TaskEditor extends Activity {
+	
+	private static final int SUBTASK_CREATE=0;
+    private static final int SUBTASK_EDIT=1;
 
     private EditText mTitleText;
     private EditText mCommentText;
     private Spinner	mPriorSpn;
     private Long mRowId;
     private DBMgr mDbHelper;
-    private CheckBox mCb;
+    private ListView mlv;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,7 @@ public class TaskEditor extends Activity {
         mTitleText = (EditText) findViewById(R.id.task_title_et);
         mCommentText = (EditText) findViewById(R.id.task_comment_et);
         mPriorSpn = (Spinner) findViewById(R.id.priority_spn);
+        mlv = (ListView) findViewById(R.id.subtask_list);
 
         Button confirmButton = (Button) findViewById(R.id.task_save_bt);
 
@@ -90,6 +94,8 @@ public class TaskEditor extends Activity {
             else{
             	mPriorSpn.setSelection(0);
             }
+            
+            mlv.setAdapter(fillSubtask());
        }
     }
     
@@ -105,15 +111,12 @@ public class TaskEditor extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			// This ID represents the Home or Up button. In the case of this
-			// activity, the Up button is shown. Use NavUtils to allow users
-			// to navigate up one level in the application structure. For
-			// more details, see the Navigation pattern on Android Design:
-			//
-			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
-			//
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
+		case R.id.new_subtask:
+//			Log.w("adkjfhakjsdf", "fajkdhfkjahdlf");
+            createSubtask();
+            return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -142,7 +145,7 @@ public class TaskEditor extends Activity {
         String title = mTitleText.getText().toString();
         String body = mCommentText.getText().toString();
         String prior = mPriorSpn.getSelectedItem().toString();
-        Log.w("prioriey", prior+"");
+//        Log.w("prioriey", prior+"");
 
         if (mRowId == null) {
             long id = mDbHelper.createTask(title, body);
@@ -154,4 +157,39 @@ public class TaskEditor extends Activity {
             
         }
     }
+    
+    private void createSubtask(){
+    	
+    	Intent i = new Intent(this, TaskEditor.class);
+//    	Bundle b = new Bundle();
+//    	Log.w("Mrowid", mRowId+"");
+//    	b.putString("parentRow", mRowId+"");
+//    	i.putExtras(b);
+        startActivityForResult(i, SUBTASK_CREATE);
+    }
+    
+    
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+		mlv.setAdapter(fillSubtask());
+	}
+	
+	
+	public MyAdapter fillSubtask(){
+		Cursor tasksCursor = mDbHelper.fetchAllTasks();
+        startManagingCursor(tasksCursor);
+
+        // Create an array to specify the fields we want to display in the list (only TITLE)
+        String[] from = new String[]{DBMgr.TASK_TITLE};
+
+        // and an array of the fields we want to bind those fields to (in this case just text1)
+        int[] to = new int[]{R.id.tv2};
+
+        // Now create a simple cursor adapter and set it to display
+        MyAdapter tasks = 
+                new MyAdapter(this, R.layout.task_row, tasksCursor, from, to);
+        return tasks;
+	}
 }

@@ -46,5 +46,6 @@
     <string name="title_taskedit">Edit task</string>
     <string name="test">TEXT TESTING</string>
     <string name="subtask">Subtask:</string>
+    <string name="new_subtask">New Subtask</string>
 
 </resources>

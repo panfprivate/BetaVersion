@@ -43,6 +43,7 @@ public final class R {
     public static final class id {
         public static final int cb=0x7f090011;
         public static final int menu_settings=0x7f090013;
+        public static final int new_subtask=0x7f090014;
         public static final int note_body=0x7f090002;
         public static final int note_title=0x7f090001;
         public static final int priority_spn=0x7f090009;
@@ -96,6 +97,7 @@ public final class R {
         public static final int menu_delete=0x7f06000a;
         public static final int menu_insert=0x7f060014;
         public static final int menu_settings=0x7f060002;
+        public static final int new_subtask=0x7f06002a;
         public static final int no_notes=0x7f060011;
         public static final int none=0x7f060026;
         public static final int note_edit=0x7f06000c;

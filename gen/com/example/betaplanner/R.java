@@ -25,8 +25,9 @@ public final class R {
         public static final int event_center=0x7f050004;
         public static final int forecast_point=0x7f05000c;
         public static final int frame=0x7f05000b;
+        public static final int green=0x7f050013;
         public static final int noMonth=0x7f050005;
-        public static final int red=0x7f050013;
+        public static final int red=0x7f050014;
         public static final int selection=0x7f050002;
         public static final int tempColor=0x7f05000a;
         public static final int text_6=0x7f050008;
@@ -34,6 +35,7 @@ public final class R {
         public static final int title_text_6=0x7f050006;
         public static final int title_text_7=0x7f050007;
         public static final int white=0x7f050000;
+        public static final int yellow=0x7f050015;
     }
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;

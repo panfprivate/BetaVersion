@@ -58,7 +58,6 @@ public class Fragment2 extends ListFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-//		registerForContextMenu(inflater.inflate(R.layout.activity_fragment1, container, false));
 		return inflater.inflate(R.layout.fragment_task, container, false);
 	}
 	
@@ -70,7 +69,7 @@ public class Fragment2 extends ListFragment {
 		super.onListItemClick(l, v, position, id);
 		Intent i = new Intent(getActivity(), TaskEditor.class);
 		i.putExtra(DBMgr.KEY_ROWID, id);
-		startActivity(i);
+		startActivityForResult(i, ACTIVITY_EDIT);
 	}
 
 	@Override
@@ -127,7 +126,6 @@ public class Fragment2 extends ListFragment {
         // Now create a simple cursor adapter and set it to display
         MyAdapter tasks = 
                 new MyAdapter(getActivity(), R.layout.task_row, tasksCursor, from, to);
-//        mll.setAdapter(notes);
         return tasks;
     }
 

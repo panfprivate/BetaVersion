@@ -1,6 +1,7 @@
 package com.example.betaplanner.Activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -58,7 +59,7 @@ public class TaskEditor extends Activity {
         confirmButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-                setResult(RESULT_OK);
+            	setResult(RESULT_OK);
                 finish();
             }
 

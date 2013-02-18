@@ -129,6 +129,19 @@ public class MyAdapter extends SimpleCursorAdapter{
 			tv.setTextColor(c.getResources().getColor(R.color.Black));
 		}
 		
+		if(cur.getString(cur.getColumnIndex(DBMgr.TASK_PRIOR)).equals("Low")){
+			cb.setBackgroundResource(R.color.green);
+		}
+		else if(cur.getString(cur.getColumnIndex(DBMgr.TASK_PRIOR)).equals("Medium")){
+			cb.setBackgroundResource(R.color.yellow);
+		}
+		else if(cur.getString(cur.getColumnIndex(DBMgr.TASK_PRIOR)).equals("High")){
+			cb.setBackgroundResource(R.color.red);
+		}
+		else {
+			
+		}
+		
 		cb.setOnCheckedChangeListener(new OnCheckedChangeListener(){
 
 			Cursor cc = c11;

@@ -11,19 +11,18 @@
     <string name="Fri">Fri</string>
     <string name="Sat">Sat</string>
     <string name="Sun">Sun</string>
-    
     <string name="save">SAVE</string>
     <string name="cancel">CANCEL</string>
     <string name="menu_delete">Delete</string>
+    <string name="menu_newevent">New Event</string>
     <string name="title_noteedit">Note Editor</string>
     <string name="note_edit">Note Edit</string>
     <string name="title_activity_main">MainActivity</string>
-	<string name="texttitle_notebody">Body</string>
+    <string name="texttitle_notebody">Body</string>
     <string name="btn_save">Save</string>
     <string name="texttitle_notetitle">Title</string>
     <string name="no_notes">No Notes</string>
     <string name="title_activity_alarm">Alarm</string>
-    
     <string name="title_activity_fragment1">Calendar</string>
     <string name="title_activity_fragment2">Note</string>
     <string name="menu_insert">Add</string>
@@ -35,8 +34,7 @@
     <string name="task_priority_tv">Priority:</string>
     <string name="title_activity_cal">Cal</string>
     <string name="task_delete">Delete</string>
-    
-	<string name="title">Title</string>
+    <string name="title">Title</string>
     <string name="body">Body</string>
     <string name="time_alert">Alert on a day: </string>
     <string name="title_activity_task_edit">TaskEdit</string>
@@ -50,5 +48,6 @@
     <string name="test">TEXT TESTING</string>
     <string name="subtask">Subtask:</string>
     <string name="new_subtask">New Subtask</string>
+    <string name="title_activity_event_editor">EventEditor</string>
 
 </resources>

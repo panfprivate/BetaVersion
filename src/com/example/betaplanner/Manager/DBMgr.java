@@ -22,6 +22,9 @@ public class DBMgr {
     public static final String SUBTASK_CHECKED = "status";
     public static final String SUBTASK_PRIOR = "prior";
     public static final String SUBTASK_PARENT = "ptask";
+    public static final String EVENT_TITLE = "eventtitle";
+    public static final String EVENT_BODY = "eventbody";
+    public static final String EVENT_DATE = "eventdate";
     public static final String KEY_ROWID = "_id";
 
     private static final String TAG = "DbAdapter";
@@ -32,6 +35,7 @@ public class DBMgr {
     private static final String DATABASE_NOTETABLE = "notes";
     private static final String DATABASE_TASKTABLE = "tasks";
     private static final String DATABASE_SUBTASKTABLE = "subtasks";
+    private static final String DATABASE_EVENTTABLE = "events";
     private static final int DATABASE_VERSION = 2;
 
 
@@ -45,7 +49,9 @@ public class DBMgr {
     	"create table subtasks (_id integer primary key autoincrement, "
     	+ "subtasktitle text not null, substaskbody text not null, status text not null, prior text not null, "
     	+ "ptask integer not null);";	//如果ptaskrow只能得到string， 那么则用text
-    
+    private static final String EVENTDB_CREATE =
+    	"create table events (_id integer primary key autoincrement, "
+        + "eventtitle text not null, eventbody text not null, eventdate text not null);";
 
     private final Context mCtx;
 
@@ -61,6 +67,7 @@ public class DBMgr {
             db.execSQL(NOTEDB_CREATE);
             db.execSQL(TASKDB_CREATE);
             db.execSQL(SUBTASKDB_CREATE);
+            db.execSQL(EVENTDB_CREATE);
         }
 
         @Override
@@ -70,6 +77,7 @@ public class DBMgr {
             db.execSQL("DROP TABLE IF EXISTS notes");
             db.execSQL("DROP TABLE IF EXISTS tasks");
             db.execSQL("DROP TABLE IF EXISTS subtasks");
+            db.execSQL("DROP TABLE IF EXISTS events");
             onCreate(db);
         }
     }
@@ -107,7 +115,23 @@ public class DBMgr {
         return mDb.delete(DATABASE_NOTETABLE, KEY_ROWID + "=" + rowId, null) > 0;
     }
 
- 
+    
+    public long createEvent(String title, String body, String date) {
+    	
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(EVENT_TITLE, title);
+        initialValues.put(EVENT_BODY, body);
+        initialValues.put(EVENT_DATE, date);
+
+        return mDb.insert(DATABASE_EVENTTABLE, null, initialValues);
+    }
+    
+    
+    public boolean deleteEvent(long rowId) {
+
+        return mDb.delete(DATABASE_EVENTTABLE, KEY_ROWID + "=" + rowId, null) > 0;
+    }
+    
     public long createTask(String title, String body) {
         
     	ContentValues initialValues = new ContentValues();
@@ -189,26 +213,26 @@ public class DBMgr {
 			    null);
     }
     
+    
+    public Cursor fetchEventsByDate(String date) {
+
+        return mDb.query(DATABASE_EVENTTABLE, 
+        		new String[] {KEY_ROWID, 
+        					EVENT_TITLE,
+        					EVENT_BODY
+        		}, 
+        		EVENT_DATE + "=" + date, 
+                null, 
+                null, 
+                null, 
+                null);
+    }
+    
     public void taskCheckedChange(long rowId, String status){
     	ContentValues args = new ContentValues();
     	args.put(TASK_CHECKED, status);
     	
     	mDb.update(DATABASE_TASKTABLE, args, KEY_ROWID + "=" + rowId, null);
-    }
-
-    
-    public Cursor fetchNote(long rowId) throws SQLException {
-
-        Cursor mCursor =
-
-            mDb.query(true, DATABASE_NOTETABLE, new String[] {KEY_ROWID,
-                    NOTE_TITLE, NOTE_BODY}, KEY_ROWID + "=" + rowId, null,
-                    null, null, null, null);
-        if (mCursor != null) {
-            mCursor.moveToFirst();
-        }
-        return mCursor;
-
     }
 
 
@@ -218,6 +242,14 @@ public class DBMgr {
         args.put(NOTE_BODY, body);
 
         return mDb.update(DATABASE_NOTETABLE, args, KEY_ROWID + "=" + rowId, null) > 0;
+    }
+    
+    public boolean updateEvent(long rowId, String title, String body, String date) {
+        ContentValues args = new ContentValues();
+        args.put(EVENT_TITLE, title);
+        args.put(EVENT_BODY, body);
+
+        return mDb.update(DATABASE_EVENTTABLE, args, KEY_ROWID + "=" + rowId + " AND " + EVENT_DATE + "=" + date, null) > 0;
     }
     
     
@@ -234,6 +266,36 @@ public class DBMgr {
 
     }
 
+    
+    public Cursor fetchNote(long rowId) throws SQLException {
+
+        Cursor mCursor =
+
+            mDb.query(true, DATABASE_NOTETABLE, new String[] {KEY_ROWID,
+                    NOTE_TITLE, NOTE_BODY}, KEY_ROWID + "=" + rowId, null,
+                    null, null, null, null);
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+        }
+        return mCursor;
+
+    }
+    
+    
+    public Cursor fetchEvent(long rowId, String date) throws SQLException {
+
+        Cursor mCursor =
+
+            mDb.query(true, DATABASE_EVENTTABLE, new String[] {KEY_ROWID,
+                    EVENT_TITLE, EVENT_BODY}, KEY_ROWID + "=" + rowId + " AND " + EVENT_DATE + "=" + date, null,
+                    null, null, null, null);
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+        }
+        return mCursor;
+
+    }
+    
 
     public boolean updateTask(long rowId, String title, String body, String prior) {
         ContentValues args = new ContentValues();
@@ -272,5 +334,7 @@ public class DBMgr {
 
         return mDb.update(DATABASE_SUBTASKTABLE, args, KEY_ROWID + "=" + rowId, null) > 0;
     }
+    
+    
     
 }

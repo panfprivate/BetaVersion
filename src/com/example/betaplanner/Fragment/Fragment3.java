@@ -6,17 +6,24 @@ import java.util.Date;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -24,6 +31,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -36,15 +44,24 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.example.betaplanner.R;
+import com.example.betaplanner.Activity.EventEditor;
 import com.example.betaplanner.Adapter.CalendarGridViewAdapter;
+import com.example.betaplanner.Adapter.MyAdapter;
 import com.example.betaplanner.Calendar.CalendarGridView;
 import com.example.betaplanner.Calendar.NumberHelper;
+import com.example.betaplanner.Manager.DBMgr;
 
 public class Fragment3 extends Fragment implements OnTouchListener{
 
 	private static final int SWIPE_MIN_DISTANCE = 120;
 	private static final int SWIPE_MAX_OFF_PATH = 250;
 	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+	
+	private static final int EVENT_CREATE=0;
+    private static final int EVENT=1;
+	
+	private static final int INSERT_ID = Menu.FIRST;
+    private static final int DELETE_ID = Menu.FIRST + 1;
 	
 	private Animation slideLeftIn;
 	private Animation slideLeftOut;
@@ -66,6 +83,7 @@ public class Fragment3 extends Fragment implements OnTouchListener{
 	private GridView gView2;// current month
 	private GridView gView3;// next month
 	private ListView lv;
+	private DBMgr mDbHelper;
 	private View mv;
 	
 	boolean bIsSelection = false;
@@ -157,7 +175,7 @@ public class Fragment3 extends Fragment implements OnTouchListener{
 		@Override
 		public boolean onSingleTapUp(MotionEvent e) {
 			// ListView lv = getListView();
-			//得到当前选中的是第几个单元格
+
 			int pos = gView2.pointToPosition((int) e.getX(), (int) e.getY());
 			LinearLayout txtDay = (LinearLayout) gView2.findViewById(pos + 5000);
 			if (txtDay != null) {
@@ -176,7 +194,8 @@ public class Fragment3 extends Fragment implements OnTouchListener{
 				}
 			}
 
-			Log.i("TEST", "onSingleTapUp -  pos=" + pos);
+			//2013-1-1 is 11301
+			Log.i("TEST", "onSingleTapUp -  pos="+calSelected.getTime().getYear()+calSelected.getTime().getMonth()+calSelected.getTime().getDate());
 
 			return false;
 		}
@@ -187,8 +206,8 @@ public class Fragment3 extends Fragment implements OnTouchListener{
 	public void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
-//		UpdateStartDateForMonth();
-		
+		mDbHelper = new DBMgr(getActivity());
+        mDbHelper.open();
 		mGesture = new GestureDetector(getActivity(), new GestureListener());
 	}
 
@@ -201,7 +220,12 @@ public class Fragment3 extends Fragment implements OnTouchListener{
 		mv.setClickable(true);
 		mv.setFocusable(true);
 		
+		
 		UpdateStartDateForMonth();
+		registerForContextMenu(gView1);
+		registerForContextMenu(gView2);
+		registerForContextMenu(gView3);
+		
 		return mv;
 	}
 	
@@ -276,6 +300,7 @@ public class Fragment3 extends Fragment implements OnTouchListener{
 
 
 		mainLayout = new LinearLayout(getActivity()); 
+		lv = new ListView(getActivity());
 		RelativeLayout.LayoutParams params_main = new RelativeLayout.LayoutParams(
 				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 		mainLayout.setLayoutParams(params_main);
@@ -321,10 +346,16 @@ public class Fragment3 extends Fragment implements OnTouchListener{
 		br.setBackgroundColor(getResources().getColor(R.color.calendar_background));
 		mainLayout.addView(br, params_br);
 		
-		lv = new ListView(getActivity());
+/*		
+		ArrayAdapter<String> adapter;
+		String products[] = {
+				"Dell Inspiron", "HTC One X", "HTCWildfire S", "HTC Sense", "HTC Sensation XE",   "iPhone4S", "Samsung Galaxy Note 800",       "SamsungGalaxy S3", "MacBook Air", "Mac Mini", "MacBookPro"};
 		adapter= new ArrayAdapter<String>(
-	    		  getActivity(), R.layout.event_row, R.id.product_name,products);
-		lv.setAdapter(adapter);
+	    		  getActivity(), R.layout.event_row, R.id.event_row_title,products);
+*/
+		
+		
+		lv.setAdapter(fillData());
 		
 		mainLayout.addView(lv);
 
@@ -366,34 +397,8 @@ public class Fragment3 extends Fragment implements OnTouchListener{
 		gView2.setOnTouchListener(this);
 		gView1.setOnTouchListener(this);
 		gView3.setOnTouchListener(this);
-/*
-		gView1.setOnTouchListener(new OnTouchListener(){
-
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
-				return mGesture.onTouchEvent(event);
-			}
-		});
 		
-		gView2.setOnTouchListener(new OnTouchListener(){
-
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
-				return mGesture.onTouchEvent(event);
-			}
-		});
 		
-		gView3.setOnTouchListener(new OnTouchListener(){
-
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
-				return mGesture.onTouchEvent(event);
-			}
-		});
-*/
 
 		if (viewFlipper.getChildCount() != 0) {
 			viewFlipper.removeAllViews();
@@ -409,7 +414,7 @@ public class Fragment3 extends Fragment implements OnTouchListener{
 						.get(Calendar.MONTH) + 1);
 
 		tv.setText(s);
-/**/
+
 	}
 	
 	
@@ -589,5 +594,66 @@ public class Fragment3 extends Fragment implements OnTouchListener{
 		lay.setGravity(Gravity.LEFT);
 		return lay;
 	}
+	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		
+		super.onCreateContextMenu(menu, v, menuInfo);
+//		menu.add(0, DELETE_ID, 0, R.string.menu_delete);
+		menu.add(0, INSERT_ID, 0, R.string.menu_newevent);
+	}
+	
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+        long buttonId = info.id;
+        
+		switch(item.getItemId()) {
+		case INSERT_ID:
+//			Log.i("TEST", "OnContext -  pos="+calSelected.getTime().getYear()+calSelected.getTime().getMonth()+calSelected.getTime().getDate());
+			createEvent(calSelected.getTime().getYear()+calSelected.getTime().getMonth()+calSelected.getTime().getDate()+"");
+			return true;
+        case DELETE_ID:
+//            AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+//            mDbHelper.deleteTask(info.id);
+//            setListAdapter(fillData());
+            return true;
+		}
+		return super.onContextItemSelected(item);
+	}
+	
+	private void createEvent(String date){
+		
+		Intent i = new Intent(getActivity(), EventEditor.class);
+		i.putExtra(DBMgr.EVENT_DATE, date);
+		startActivityForResult(i, EVENT_CREATE);
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+		lv.setAdapter(fillData());
+	}
+	
+	
+	private SimpleCursorAdapter fillData() {
+		String s = calSelected.getTime().getYear()+calSelected.getTime().getMonth()+calSelected.getTime().getDate()+"";
+        Cursor eventCursor = mDbHelper.fetchEventsByDate(s);
+        getActivity().startManagingCursor(eventCursor);
+
+        // Create an array to specify the fields we want to display in the list (only TITLE)
+        String[] from = new String[]{DBMgr.EVENT_TITLE};
+
+        // and an array of the fields we want to bind those fields to (in this case just text1)
+        int[] to = new int[]{R.id.event_row_title};
+
+        // Now create a simple cursor adapter and set it to display
+        MyAdapter events = 
+                new MyAdapter(getActivity(), R.layout.event_row, eventCursor, from, to);
+        return events;
+    }
 }
 

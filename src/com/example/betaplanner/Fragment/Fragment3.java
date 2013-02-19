@@ -1,6 +1,7 @@
 package com.example.betaplanner.Fragment;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -12,10 +13,13 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -36,12 +40,25 @@ import com.example.betaplanner.Adapter.CalendarGridViewAdapter;
 import com.example.betaplanner.Calendar.CalendarGridView;
 import com.example.betaplanner.Calendar.NumberHelper;
 
-public class Fragment3 extends Fragment {
+public class Fragment3 extends Fragment implements OnTouchListener{
 
-
+	private static final int SWIPE_MIN_DISTANCE = 120;
+	private static final int SWIPE_MAX_OFF_PATH = 250;
+	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+	
+	private Animation slideLeftIn;
+	private Animation slideLeftOut;
+	private Animation slideRightIn;
+	private Animation slideRightOut;
 	private ViewFlipper viewFlipper;
 
 	GestureDetector mGesture = null;
+	
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		// TODO Auto-generated method stub
+		return mGesture.onTouchEvent(event);
+	}
 	
 //	private Context mContext;
 	private GridView title_gView;
@@ -105,10 +122,74 @@ public class Fragment3 extends Fragment {
 	};
 	
 	
+	class GestureListener extends SimpleOnGestureListener {
+		@Override
+		//在onFling方法中, 判断是不是一个合理的swipe动作;
+		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,float velocityY) {
+			try {
+				if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
+					return false;
+				// right to left swipe
+				if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE	&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+					viewFlipper.setInAnimation(slideLeftIn);
+					viewFlipper.setOutAnimation(slideLeftOut);
+					viewFlipper.showNext();
+					setNextViewItem();
+					
+					return true;
+
+				} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+					//这里的viewFlipper是含有多个view的一个container, 可以很方便的调用prev/next view; 
+
+					viewFlipper.setInAnimation(slideRightIn);
+					viewFlipper.setOutAnimation(slideRightOut);
+					viewFlipper.showPrevious();
+					setPrevViewItem();
+					
+					return true;
+
+				}
+			} catch (Exception e) {
+				// nothing
+			}
+			return false;
+		}
+		@Override
+		public boolean onSingleTapUp(MotionEvent e) {
+			// ListView lv = getListView();
+			//得到当前选中的是第几个单元格
+			int pos = gView2.pointToPosition((int) e.getX(), (int) e.getY());
+			LinearLayout txtDay = (LinearLayout) gView2.findViewById(pos + 5000);
+			if (txtDay != null) {
+				if (txtDay.getTag() != null) {
+					Date date = (Date) txtDay.getTag();
+					calSelected.setTime(date);
+
+					gAdapter.setSelectedDate(calSelected);
+					gAdapter.notifyDataSetChanged();
+
+					gAdapter1.setSelectedDate(calSelected);
+					gAdapter1.notifyDataSetChanged();
+
+					gAdapter3.setSelectedDate(calSelected);
+					gAdapter3.notifyDataSetChanged();
+				}
+			}
+
+			Log.i("TEST", "onSingleTapUp -  pos=" + pos);
+
+			return false;
+		}
+	}
+	
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		
-		super.onCreate(savedInstanceState);	
+		super.onCreate(savedInstanceState);
+//		UpdateStartDateForMonth();
+		
+		mGesture = new GestureDetector(getActivity(), new GestureListener());
 	}
 
 	@Override
@@ -198,6 +279,7 @@ public class Fragment3 extends Fragment {
 		RelativeLayout.LayoutParams params_main = new RelativeLayout.LayoutParams(
 				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 		mainLayout.setLayoutParams(params_main);
+//		mainLayout.setClickable(true);
 		mainLayout.setOrientation(1);
 		mainLayout.setId(mainLayoutID);
 		mainLayout.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -210,6 +292,7 @@ public class Fragment3 extends Fragment {
 				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 		params_title.topMargin = 5;
 
+//		layTopControls.setClickable(true);
 		layTopControls.setId(titleLayoutID);
 		mainLayout.addView(layTopControls, params_title);
 
@@ -260,6 +343,7 @@ public class Fragment3 extends Fragment {
 		tempSelected3.setTime(calStartDate.getTime());
 
 		gView1 = new CalendarGridView(getActivity());
+//		gView1.setClickable(true);
 		tempSelected1.add(Calendar.MONTH, -1);
 		gAdapter1 = new CalendarGridViewAdapter(getActivity(), tempSelected1, gView1);
 		gView1.getHeight();
@@ -267,19 +351,49 @@ public class Fragment3 extends Fragment {
 		gView1.setId(calLayoutID);
 
 		gView2 = new CalendarGridView(getActivity());
+//		gView2.setClickable(true);
 		gAdapter = new CalendarGridViewAdapter(getActivity(), tempSelected2, gView2);
 		gView2.setAdapter(gAdapter);
 		gView2.setId(calLayoutID);
 
 		gView3 = new CalendarGridView(getActivity());
+//		gView3.setClickable(true);
 		tempSelected3.add(Calendar.MONTH, 1);
 		gAdapter3 = new CalendarGridViewAdapter(getActivity(), tempSelected3, gView3);
 		gView3.setAdapter(gAdapter3);
 		gView3.setId(calLayoutID);
 
-//		gView2.setOnTouchListener(this);
-//		gView1.setOnTouchListener(this);
-//		gView3.setOnTouchListener(this);
+		gView2.setOnTouchListener(this);
+		gView1.setOnTouchListener(this);
+		gView3.setOnTouchListener(this);
+/*
+		gView1.setOnTouchListener(new OnTouchListener(){
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+				return mGesture.onTouchEvent(event);
+			}
+		});
+		
+		gView2.setOnTouchListener(new OnTouchListener(){
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+				return mGesture.onTouchEvent(event);
+			}
+		});
+		
+		gView3.setOnTouchListener(new OnTouchListener(){
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+				return mGesture.onTouchEvent(event);
+			}
+		});
+*/
 
 		if (viewFlipper.getChildCount() != 0) {
 			viewFlipper.removeAllViews();
@@ -333,6 +447,7 @@ public class Fragment3 extends Fragment {
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 		GridView gridView = new GridView(getActivity());
+//		gridView.setClickable(true);
 		gridView.setLayoutParams(params);
 		gridView.setNumColumns(7);
 		gridView.setGravity(Gravity.CENTER_VERTICAL);
@@ -435,14 +550,7 @@ public class Fragment3 extends Fragment {
 		btnnxt.setText("Next");
 		
 		tv.setTextSize(25);
-//		btnToday.setBackgroundResource(Color.TRANSPARENT);//
-		
-/*		btnToday.setOnClickListener(new Button.OnClickListener() {
-			public void onClick(View arg0) {
-				setToDayViewItem();
-			}
-		});
-*/		
+
 		
 		btnpre.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View arg0) {

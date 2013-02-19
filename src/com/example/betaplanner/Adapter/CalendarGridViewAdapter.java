@@ -6,6 +6,7 @@ import java.util.Date;
 
 import android.app.Activity;
 import android.content.res.Resources;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -149,6 +150,7 @@ public class CalendarGridViewAdapter extends BaseAdapter {
 		if (equalsDate(calSelected.getTime(), myDate)) {
 			// 选择的
 			iv.setBackgroundColor(resources.getColor(R.color.selection));
+//			Log.w("select date", calSelected.getTime()+"");
 		} else {
 			if (equalsDate(calToday.getTime(), myDate)) {
 				// 当前日期

@@ -2,7 +2,7 @@
 <resources>
     <color name="white">#ffffffff</color>
 	<color name="calendar_background">#000</color>
-	<color name="selection">#FF0000</color>
+	<color name="selection">#BADDFF</color>
 	<color name="calendar_zhe_day">#faedda</color>
 	<color name="event_center">#ff6bd697</color>
 	<color name="noMonth">#c0c0c0</color>

@@ -30,6 +30,10 @@
             android:name="com.example.betaplanner.Activity.TaskEditor"
             android:label="@string/title_activity_t_editor" >
         </activity>
+        <activity
+            android:name="com.example.betaplanner.Alarm.Alarm"
+            android:label="@string/title_activity_alarm" >
+        </activity>
     </application>
 
 </manifest>

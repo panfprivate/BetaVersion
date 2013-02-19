@@ -11,7 +11,9 @@
     <string name="Fri">Fri</string>
     <string name="Sat">Sat</string>
     <string name="Sun">Sun</string>
-
+    
+    <string name="save">SAVE</string>
+    <string name="cancel">CANCEL</string>
     <string name="menu_delete">Delete</string>
     <string name="title_noteedit">Note Editor</string>
     <string name="note_edit">Note Edit</string>
@@ -20,6 +22,7 @@
     <string name="btn_save">Save</string>
     <string name="texttitle_notetitle">Title</string>
     <string name="no_notes">No Notes</string>
+    <string name="title_activity_alarm">Alarm</string>
     
     <string name="title_activity_fragment1">Calendar</string>
     <string name="title_activity_fragment2">Note</string>

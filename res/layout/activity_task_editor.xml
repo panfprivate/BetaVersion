@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/task_title_hint_et"
-
         />
     
     <LinearLayout 
@@ -24,11 +23,12 @@
 	        android:text="@string/task_time_alert_tv"
 	        />
 	    
-	    <Spinner 
-	        android:id="@+id/task_time_alert_spinner"
+	    <EditText 
+	        android:id="@+id/task_time_alert_et"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
+	        android:inputType="none"
 	        />
 	    
 	    <ToggleButton 
@@ -51,11 +51,12 @@
 	        android:text="@string/task_location_alert_tv"
 	        />
 	    
-	    <Spinner 
-	        android:id="@+id/task_location_alert_spinner"
+	    <EditText 
+	        android:id="@+id/task_location_alert_et"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
+	        android:inputType="none"
 	        />
 	    
 	    <ToggleButton 

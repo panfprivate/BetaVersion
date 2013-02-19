@@ -20,11 +20,13 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -36,17 +38,8 @@ import com.example.betaplanner.Calendar.NumberHelper;
 
 public class Fragment3 extends Fragment {
 
-/*	//To detect the gestures
-	private static final int SWIPE_MIN_DISTANCE = 120;
-	private static final int SWIPE_MAX_OFF_PATH = 250;
-	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 
-	//Animations
-	private Animation slideLeftIn;
-	private Animation slideLeftOut;
-	private Animation slideRightIn;
-	private Animation slideRightOut;
-*/	private ViewFlipper viewFlipper;
+	private ViewFlipper viewFlipper;
 
 	GestureDetector mGesture = null;
 	
@@ -55,6 +48,7 @@ public class Fragment3 extends Fragment {
 	private GridView gView1;// last month
 	private GridView gView2;// current month
 	private GridView gView3;// next month
+	private ListView lv;
 	private View mv;
 	
 	boolean bIsSelection = false;
@@ -64,10 +58,13 @@ public class Fragment3 extends Fragment {
 	private CalendarGridViewAdapter gAdapter;
 	private CalendarGridViewAdapter gAdapter1;
 	private CalendarGridViewAdapter gAdapter3;
+	ArrayAdapter<String> adapter;
+	String products[] = {
+			"Dell Inspiron", "HTC One X", "HTCWildfire S", "HTC Sense", "HTC Sensation XE",   "iPhone4S", "Samsung Galaxy Note 800",       "SamsungGalaxy S3", "MacBook Air", "Mac Mini", "MacBookPro"};
 	
 	private TextView tv;
 	private Button btnpre, btnnxt;
-	private RelativeLayout mainLayout;
+	private LinearLayout mainLayout;
 
 	private int iMonthViewCurrentMonth = 0; 
 	private int iMonthViewCurrentYear = 0; 
@@ -106,87 +103,12 @@ public class Fragment3 extends Fragment {
 			CreateGirdView();
 		}
 	};
-/*	
-	class GestureListener extends SimpleOnGestureListener {
-		@Override
-		
-		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,float velocityY) {
-			try {
-				if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
-					return false;
-				// right to left swipe
-				if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE	&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-//					viewFlipper.setInAnimation(slideLeftIn);
-//					viewFlipper.setOutAnimation(slideLeftOut);
-					viewFlipper.showNext();
-					setNextViewItem();
-					CreateGirdView();
-					return true;
-
-				} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-
-//					viewFlipper.setInAnimation(slideRightIn);
-//					viewFlipper.setOutAnimation(slideRightOut);
-					viewFlipper.showPrevious();
-					setPrevViewItem();
-					CreateGirdView();
-					return true;
-
-				}
-			} catch (Exception e) {
-				// nothing
-			}
-			return false;
-		}
-		@Override
-		public boolean onSingleTapUp(MotionEvent e) {
-			// ListView lv = getListView();
-			
-			int pos = gView2.pointToPosition((int) e.getX(), (int) e.getY());
-			LinearLayout txtDay = (LinearLayout) gView2.findViewById(pos + 5000);
-			if (txtDay != null) {
-				if (txtDay.getTag() != null) {
-					Date date = (Date) txtDay.getTag();
-					calSelected.setTime(date);
-
-					gAdapter.setSelectedDate(calSelected);
-					gAdapter.notifyDataSetChanged();
-
-					gAdapter1.setSelectedDate(calSelected);
-					gAdapter1.notifyDataSetChanged();
-
-					gAdapter3.setSelectedDate(calSelected);
-					gAdapter3.notifyDataSetChanged();
-				}
-			}
-
-			Log.i("TEST", "onSingleTapUp -  pos=" + pos);
-
-			return false;
-		}
-	}
-	
-*/	
-	
 	
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);	
-/*		
-		slideLeftIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_left_in);
-		slideLeftOut = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_left_out);
-		slideRightIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_right_in);
-		slideRightOut = AnimationUtils.loadAnimation(getActivity(),R.anim.slide_right_out);
-		
-		slideLeftIn.setAnimationListener(animationListener);
-		slideLeftOut.setAnimationListener(animationListener);
-		slideRightIn.setAnimationListener(animationListener);
-		slideRightOut.setAnimationListener(animationListener);
-*/		
-
-//		mGesture = new GestureDetector(getActivity(), new GestureListener());
 	}
 
 	@Override
@@ -253,16 +175,6 @@ public class Fragment3 extends Fragment {
 	}
 
 	
-/*	private void setToDayViewItem() {
-
-		calSelected.setTimeInMillis(calToday.getTimeInMillis());
-		calSelected.setFirstDayOfWeek(iFirstDayOfWeek);
-		calStartDate.setTimeInMillis(calToday.getTimeInMillis());
-		calStartDate.setFirstDayOfWeek(iFirstDayOfWeek);
-		CreateGirdView();
-	}
-*/
-	
 	private void setNextViewItem() {
 		iMonthViewCurrentMonth++;
 		if (iMonthViewCurrentMonth == 12) {
@@ -282,10 +194,11 @@ public class Fragment3 extends Fragment {
 		viewFlipper.setId(calLayoutID);
 
 
-		mainLayout = new RelativeLayout(getActivity()); 
+		mainLayout = new LinearLayout(getActivity()); 
 		RelativeLayout.LayoutParams params_main = new RelativeLayout.LayoutParams(
 				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 		mainLayout.setLayoutParams(params_main);
+		mainLayout.setOrientation(1);
 		mainLayout.setId(mainLayoutID);
 		mainLayout.setGravity(Gravity.CENTER_HORIZONTAL);
 		
@@ -324,6 +237,13 @@ public class Fragment3 extends Fragment {
 
 		br.setBackgroundColor(getResources().getColor(R.color.calendar_background));
 		mainLayout.addView(br, params_br);
+		
+		lv = new ListView(getActivity());
+		adapter= new ArrayAdapter<String>(
+	    		  getActivity(), R.layout.event_row, R.id.product_name,products);
+		lv.setAdapter(adapter);
+		
+		mainLayout.addView(lv);
 
 		return mainLayout;
 

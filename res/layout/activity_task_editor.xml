@@ -18,27 +18,25 @@
         >
         
 	    <TextView 
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/task_time_alert_tv"
-	        />
-	    
-	    <EditText 
-	        android:id="@+id/task_time_alert_et"
-	        android:layout_width="match_parent"
+	        android:layout_width="0dp"
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
-	        android:inputType="none"
+	        android:text="@string/task_time_alert_tv"
 	        />
 	    
 	    <ToggleButton 
 	        android:id="@+id/task_time_alert_tb"
-	        android:layout_width="match_parent"
+	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:checked="false"
-	        android:layout_weight="1"
 	       	/>   
     </LinearLayout>
+    
+    <EditText
+        android:id="@+id/task_time_alert_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="none" />
 
     <LinearLayout 
 		android:layout_width="match_parent"
@@ -46,27 +44,27 @@
         >
         
 	    <TextView 
-	        android:layout_width="wrap_content"
+	        android:layout_width="0dp"
 	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
 	        android:text="@string/task_location_alert_tv"
 	        />
-	    
-	    <EditText 
-	        android:id="@+id/task_location_alert_et"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:inputType="none"
-	        />
-	    
-	    <ToggleButton 
+
+	    <ToggleButton
 	        android:id="@+id/task_location_alert_tb"
-	        android:layout_width="match_parent"
+	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:checked="false"
-	        android:layout_weight="1"
-	       	/>   
+	        
+	         />
+   
     </LinearLayout>
+    
+    <EditText
+        android:id="@+id/task_location_alert_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text" />
     
     <LinearLayout 
 		android:layout_width="match_parent"
@@ -78,44 +76,6 @@
 	        android:layout_height="wrap_content"
 	        android:text="@string/task_priority_tv"
 	        />
-<!--         
-	    <RadioGroup 
-	        android:id="@+id/task_priority_rg"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:orientation="horizontal"
-	        android:layout_gravity="right"
-	        >
-	        
-	        <RadioButton 
-	            android:id="@+id/task_priority_none_rb"
-	            android:checked="true"
-	            android:text="@string/none"
-	            android:layout_weight="1"
-	        />
-	        
-	        <RadioButton 
-	            android:id="@+id/task_priority_low_rb"
-	            android:checked="true"
-	            android:text="@string/low_priority"
-	            android:layout_weight="1"
-	        />
-	        
-	        <RadioButton 
-	            android:id="@+id/task_priority_med_rb"
-	            android:checked="true"
-	            android:text="@string/med_priority"
-	            android:layout_weight="1"
-	        />
-	        
-	        <RadioButton 
-	            android:id="@+id/task_priority_high_rb"
-	            android:checked="true"
-	            android:text="@string/high_priority"
-	            android:layout_weight="1"
-	        />
-	    </RadioGroup>
---> 
 
 		<Spinner 
 		    android:id="@+id/priority_spn"
@@ -157,6 +117,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:text="@string/save"
             />
         
         <Button 
@@ -164,6 +125,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:text="@string/cancel"
             />
     </LinearLayout>
     

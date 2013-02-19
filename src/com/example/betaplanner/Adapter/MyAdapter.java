@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.Filter;
 import android.widget.TextView;
 
 import com.example.betaplanner.R;
@@ -174,6 +175,12 @@ public class MyAdapter extends SimpleCursorAdapter{
 			
 		});
 		super.bindView(v, c, cur);
+	}
+
+	@Override
+	public Filter getFilter() {
+		// TODO Auto-generated method stub
+		return super.getFilter();
 	}
 	
 }

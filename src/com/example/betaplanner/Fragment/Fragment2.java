@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -12,20 +14,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.LinearLayout;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.FilterQueryProvider;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.example.betaplanner.R;
-import com.example.betaplanner.Activity.NoteEditor;
 import com.example.betaplanner.Activity.TaskEditor;
 import com.example.betaplanner.Adapter.MyAdapter;
 import com.example.betaplanner.Manager.DBMgr;
 
-public class Fragment2 extends ListFragment {
+public class Fragment2 extends ListFragment{
 	private static final int ACTIVITY_CREATE=0;
     private static final int ACTIVITY_EDIT=1;
 
@@ -34,17 +34,21 @@ public class Fragment2 extends ListFragment {
 
     private DBMgr mDbHelper;
 	private MyAdapter msca;
+	private EditText mSet;
+	ArrayAdapter<String> adapter;
+	private View mv;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
+//		getListView().setFastScrollEnabled(true);
 		mDbHelper = new DBMgr(getActivity());
         mDbHelper.open();
+//        mSet = (EditText) getActivity().findViewById(R.id.search_et);
         
-        msca = fillData();
-        setListAdapter(msca);
+        
 	}
 	
 	@Override
@@ -57,8 +61,55 @@ public class Fragment2 extends ListFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		return inflater.inflate(R.layout.fragment_task, container, false);
+		
+		mv = inflater.inflate(R.layout.fragment_task, container, false);
+		mSet = (EditText) mv.findViewById(R.id.search_et);
+		
+		msca = fillData();
+		setListAdapter(msca);
+
+		/*
+		msca.setFilterQueryProvider(new FilterQueryProvider() {
+
+	        public Cursor runQuery(CharSequence constraint) {
+	            String partialItemName = null;
+	            if (constraint != null) {
+	                partialItemName = constraint.toString();
+	            }
+	            return mDbHelper.suggestItemCompletions(partialItemName);
+	        }
+	    });
+		*/
+		
+		mSet.addTextChangedListener(new TextWatcher() {
+			 
+			 public void onTextChanged(CharSequence cs, int start, int before, int count) {
+			   //get the text in the EditText
+			   String searchString=mSet.getText().toString();
+			   int textLength=searchString.length();
+			 
+			          //clear the initial data set
+//			   searchResults.clear();
+			 
+			   
+			   
+			   msca.notifyDataSetChanged();
+			 }
+			 
+			 public void beforeTextChanged(CharSequence s, int start, int count,
+			     int after) {
+			 
+			 
+			   }
+			 
+			   public void afterTextChanged(Editable s) {
+			 
+			 
+			   }
+			  });
+
+		
+		return mv;
 	}
 	
 

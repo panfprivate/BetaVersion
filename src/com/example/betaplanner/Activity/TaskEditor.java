@@ -2,14 +2,20 @@ package com.example.betaplanner.Activity;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
@@ -26,8 +32,8 @@ import android.widget.ToggleButton;
 
 import com.example.betaplanner.R;
 import com.example.betaplanner.Adapter.MyAdapter;
-import com.example.betaplanner.Alarm.Alarm;
 import com.example.betaplanner.Alarm.DTpicker;
+import com.example.betaplanner.Alarm.ProximityAlertReceiver;
 import com.example.betaplanner.Manager.DBMgr;
 
 public class TaskEditor extends Activity implements DTpicker.DTpickerListener{
@@ -49,10 +55,15 @@ public class TaskEditor extends Activity implements DTpicker.DTpickerListener{
     private AlarmManager aManager;
     private ListView mlv;
     
+    private Geocoder mgc;
+    private List<Address> address;
+    private String mLocService;
+	private LocationManager mLocMgr;
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// Show the Up button in the action bar.
+
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		mDbHelper = new DBMgr(this);
         mDbHelper.open();
@@ -75,7 +86,6 @@ public class TaskEditor extends Activity implements DTpicker.DTpickerListener{
         dialog.setContentView(R.layout.dtdialog);
 		dialog.setTitle("Custom Dialog");
         
-//        mTimeAlert.setText(sdf.format(c.getTime()) + sdf2.format(c.getTime()));
 
         Button confirmButton = (Button) findViewById(R.id.task_save_bt);
 
@@ -106,14 +116,49 @@ public class TaskEditor extends Activity implements DTpicker.DTpickerListener{
 		});
 		
 		
+		Intent i = new Intent(this, ProximityAlertReceiver.class);
+		final PendingIntent pi = PendingIntent.getBroadcast(this, -1, i, 0);	
+		
 		mTb2.setOnCheckedChangeListener(new OnCheckedChangeListener()
 		{
 
 			@Override
 			public void onCheckedChanged(CompoundButton arg0, boolean arg1)
 			{
-					Intent i = new Intent(TaskEditor.this, Alarm.class);
-					startActivity(i);
+				if(arg1)
+				{
+					String s = mLocAlert.getText().toString();
+					try {
+					    address = mgc.getFromLocationName(s ,5);
+					    if (address == null) {
+					        
+					    }
+					    Address location = address.get(0);
+					    location.getLatitude();
+					    location.getLongitude();
+					    
+//					    tv3.setText("latitude: " + location.getLatitude() + "; longitude: " + location.getLongitude());
+					    
+//					    LocAlerter la = new LocAlerter();//location.getLatitude(), location.getLongitude(), (float)300
+//					    la.alertAtLoc(location.getLatitude(), location.getLongitude(), (float)300);
+
+					    Log.w("ngfddytudh",location.getLatitude() + "," + location.getLongitude()+ "," + 300 +"");
+						mLocService = Context.LOCATION_SERVICE;
+						mLocMgr = (LocationManager) getSystemService(mLocService);
+						
+		
+						mLocMgr.addProximityAlert(location.getLatitude(), location.getLongitude(), 300, -1, pi);	
+//						mLocMgr.addProximityAlert(52.38, -1.54, 300, -1, pi);	
+
+						Log.w("vdfgsfdg",location.getLatitude() + "," + location.getLongitude()+ "," + 300 +"");
+					} catch(Exception e){
+						
+					}
+				}
+				else
+				{
+					mLocAlert.setText("");
+				}
 			}		
 		});
 		

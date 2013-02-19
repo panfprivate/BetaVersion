@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -16,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -54,6 +57,7 @@ public class Fragment1 extends Fragment {
 		mll = (LinearLayout)mv.findViewById(R.id.tab01);
 		mlv = (ListView)mv.findViewById(android.R.id.list);
 		mlv.setAdapter(fillData());
+		
 		mlv.setClickable(true);
 		mlv.setOnItemClickListener(new OnItemClickListener() {
 

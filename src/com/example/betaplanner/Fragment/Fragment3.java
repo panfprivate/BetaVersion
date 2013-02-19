@@ -209,6 +209,7 @@ public class Fragment3 extends Fragment implements OnTouchListener{
 		mDbHelper = new DBMgr(getActivity());
         mDbHelper.open();
 		mGesture = new GestureDetector(getActivity(), new GestureListener());
+		lv = new ListView(getActivity());
 	}
 
 	@Override
@@ -219,6 +220,7 @@ public class Fragment3 extends Fragment implements OnTouchListener{
 		mv = generateContentView();
 		mv.setClickable(true);
 		mv.setFocusable(true);
+		
 		
 		
 		UpdateStartDateForMonth();
@@ -300,7 +302,7 @@ public class Fragment3 extends Fragment implements OnTouchListener{
 
 
 		mainLayout = new LinearLayout(getActivity()); 
-		lv = new ListView(getActivity());
+//		lv = new ListView(getActivity());
 		RelativeLayout.LayoutParams params_main = new RelativeLayout.LayoutParams(
 				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 		mainLayout.setLayoutParams(params_main);
@@ -354,9 +356,10 @@ public class Fragment3 extends Fragment implements OnTouchListener{
 	    		  getActivity(), R.layout.event_row, R.id.event_row_title,products);
 */
 		
-		
+		Log.w("test", "fill lv");
 		lv.setAdapter(fillData());
 		
+		Log.w("asdasd", "asdasdasd");
 		mainLayout.addView(lv);
 
 		return mainLayout;
@@ -612,8 +615,8 @@ public class Fragment3 extends Fragment implements OnTouchListener{
         
 		switch(item.getItemId()) {
 		case INSERT_ID:
-//			Log.i("TEST", "OnContext -  pos="+calSelected.getTime().getYear()+calSelected.getTime().getMonth()+calSelected.getTime().getDate());
-			createEvent(calSelected.getTime().getYear()+calSelected.getTime().getMonth()+calSelected.getTime().getDate()+"");
+			Log.i("TEST", "OnContext -  pos="+calSelected.getTime().getYear()+calSelected.getTime().getMonth()+calSelected.getTime().getDate());
+			createEvent(calSelected.getTime().getYear()+""+calSelected.getTime().getMonth()+""+calSelected.getTime().getDate());
 			return true;
         case DELETE_ID:
 //            AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
@@ -640,7 +643,8 @@ public class Fragment3 extends Fragment implements OnTouchListener{
 	
 	
 	private SimpleCursorAdapter fillData() {
-		String s = calSelected.getTime().getYear()+calSelected.getTime().getMonth()+calSelected.getTime().getDate()+"";
+		String s = calSelected.getTime().getYear()+""+calSelected.getTime().getMonth()+""+calSelected.getTime().getDate();
+		Log.w("S is ", s);
         Cursor eventCursor = mDbHelper.fetchEventsByDate(s);
         getActivity().startManagingCursor(eventCursor);
 
@@ -651,8 +655,8 @@ public class Fragment3 extends Fragment implements OnTouchListener{
         int[] to = new int[]{R.id.event_row_title};
 
         // Now create a simple cursor adapter and set it to display
-        MyAdapter events = 
-                new MyAdapter(getActivity(), R.layout.event_row, eventCursor, from, to);
+        SimpleCursorAdapter events = 
+                new SimpleCursorAdapter(getActivity(), R.layout.event_row, eventCursor, from, to);
         return events;
     }
 }
